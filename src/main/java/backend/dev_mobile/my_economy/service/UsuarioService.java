@@ -19,14 +19,13 @@ public class UsuarioService {
         if (usuarioRepository.existsById(usuario.getEmail())) {
             throw new RuntimeException("Email já existe");
         }
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
     public Usuario login(String email, String password) {
-        Usuario usuario = usuarioRepository.findById(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não foi encontrado"));
-        if (!passwordEncoder.matches(password, usuario.getPassword())) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (!passwordEncoder.matches(password, usuario.getSenha())) {
             throw new RuntimeException("Senha inválida");
         }
         return usuario;

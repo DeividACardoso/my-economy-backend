@@ -15,17 +15,17 @@ public class LimiteMensalService {
     @Autowired
     private LimiteMensalRepository limiteMensalRepository;
 
-    public LimiteMensal createMonthlyLimit(LimiteMensal limite) {
-        YearMonth currentMonth = YearMonth.now();
-        if (limite.getReferenciaMes().isBefore(currentMonth)) {
-            throw new IllegalArgumentException("Cannot create limits for past months");
-        }
-        if (limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(limite.getUsuarioEmail(), limite.getReferenciaMes())
-                .isPresent()) {
-            throw new IllegalArgumentException("Limit already set for this month");
-        }
-        return limiteMensalRepository.save(limite);
-    }
+    // public LimiteMensal createMonthlyLimit(LimiteMensal limite) {
+    //     YearMonth currentMonth = YearMonth.now();
+    //     if (limite.getReferenciaMes().isBefore(currentMonth)) {
+    //         throw new IllegalArgumentException("Cannot create limits for past months");
+    //     }
+    //     if (limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(limite.getUsuarioEmail(), limite.getReferenciaMes())
+    //             .isPresent()) {
+    //         throw new IllegalArgumentException("Limit already set for this month");
+    //     }
+    //     return limiteMensalRepository.save(limite);
+    // }
 
     public Optional<LimiteMensal> getMonthlyLimit(String email, YearMonth month) {
         return limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(email, month);

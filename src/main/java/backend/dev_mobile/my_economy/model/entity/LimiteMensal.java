@@ -1,5 +1,6 @@
 package backend.dev_mobile.my_economy.model.entity;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ public class LimiteMensal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double quantidade;
-    private YearMonth referenciaMes;
+    private LocalDate referenciaMes;
     private String usuarioEmail;
 
 }
