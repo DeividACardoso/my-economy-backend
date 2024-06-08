@@ -28,10 +28,14 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails{
 
-    public Usuario(String login, String password, UserRole role){
+    public Usuario(String login, String nome, String password, UserRole role, LocalDate dtNascimento, Integer idDespesa, Integer idLimiteMensal) {
         this.login = login;
+        this.nome = nome;
         this.password = password;
         this.role = role;
+        this.dtNascimento = dtNascimento;
+        this.idDespesa = idDespesa;
+        this.idLimiteMensal = idLimiteMensal;
     }
 
     @Id

@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -33,25 +33,34 @@ public class AuthenticationController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.GenerateToken((Usuario)auth.getPrincipal());
+        var token = tokenService.GenerateToken((Usuario) auth.getPrincipal());
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
+        if (this.usuarioRepository.findByLogin(data.login()) != null)
+            return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 
-        Usuario usuario = new Usuario(data.login(), encryptedPassword, data.role());
+        Usuario usuario = new Usuario(
+                data.login(),
+                data.nome(),
+                encryptedPassword,
+                data.role(),
+                data.dtNascimento(),
+                data.idDespesa(),
+                data.idLimiteMensal());
 
         this.usuarioRepository.save(usuario);
 
         return ResponseEntity.ok().build();
     }
+
 }
