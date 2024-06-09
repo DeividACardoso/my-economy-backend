@@ -10,8 +10,8 @@ import backend.dev_mobile.my_economy.model.entity.Usuario;
 import backend.dev_mobile.my_economy.service.UsuarioService;
 
 @RestController
-@RequestMapping("/usuarios")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:5500" }, maxAge = 3600)
+@RequestMapping("/api/usuarios")
+@CrossOrigin(origins = {"http://localhost:8081","exp://192.168.0.16:8081","http://localhost:9000"}, maxAge = 3600)
 public class UsuarioController {
 
     @Autowired
