@@ -21,6 +21,7 @@ public class TokenService {
     String secret;
 
     public String GenerateToken(Usuario usuario) {
+        System.out.println("Oi TokenService");
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
