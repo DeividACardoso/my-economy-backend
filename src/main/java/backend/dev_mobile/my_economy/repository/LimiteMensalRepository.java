@@ -1,6 +1,6 @@
 package backend.dev_mobile.my_economy.repository;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +10,5 @@ import backend.dev_mobile.my_economy.model.entity.LimiteMensal;
 
 @Repository
 public interface LimiteMensalRepository extends JpaRepository<LimiteMensal, Long> {
-    Optional<LimiteMensal> findByUsuarioEmailAndReferenciaMes(String email, YearMonth mesReferencia);
+    Optional<LimiteMensal> findByUsuarioEmailAndReferenciaMes(String email, LocalDate mesReferencia);
 }

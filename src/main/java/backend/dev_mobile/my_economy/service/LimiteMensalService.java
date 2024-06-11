@@ -1,6 +1,6 @@
 package backend.dev_mobile.my_economy.service;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +15,19 @@ public class LimiteMensalService {
     @Autowired
     private LimiteMensalRepository limiteMensalRepository;
 
-    // public LimiteMensal createMonthlyLimit(LimiteMensal limite) {
-    //     YearMonth currentMonth = YearMonth.now();
-    //     if (limite.getReferenciaMes().isBefore(currentMonth)) {
-    //         throw new IllegalArgumentException("Cannot create limits for past months");
-    //     }
-    //     if (limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(limite.getUsuarioEmail(), limite.getReferenciaMes())
-    //             .isPresent()) {
-    //         throw new IllegalArgumentException("Limit already set for this month");
-    //     }
-    //     return limiteMensalRepository.save(limite);
-    // }
+    public LimiteMensal criarLimiteMensal(LimiteMensal limite) {
+        LocalDate currentMonth = LocalDate.now().withDayOfMonth(01);
+        if (limite.getReferenciaMes().isBefore(currentMonth)) {
+            throw new IllegalArgumentException("Não é possivel criar limites para meses que já passaram.");
+        }
+        if (limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(limite.getUsuarioEmail(), limite.getReferenciaMes())
+                .isPresent()) {
+            throw new IllegalArgumentException("Limite para este mês já foi gerado.");
+        }
+        return limiteMensalRepository.save(limite);
+    }
 
-    public Optional<LimiteMensal> getMonthlyLimit(String email, YearMonth month) {
+    public Optional<LimiteMensal> getLimiteMensal(String email, LocalDate month) {
         return limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(email, month);
     }
 }
