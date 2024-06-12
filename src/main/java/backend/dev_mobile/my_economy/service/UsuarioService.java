@@ -14,5 +14,6 @@ public class UsuarioService {
     public Iterable<Usuario> listarTodos(){
         return usuarioRepository.findAll();
     }
+
 }
 

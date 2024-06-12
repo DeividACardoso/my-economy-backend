@@ -9,7 +9,10 @@ import backend.dev_mobile.my_economy.model.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
+
     UserDetails findByLogin(String login);
+
+    Usuario getByLogin(String login);
 
     boolean existsByLogin(String login);
 
