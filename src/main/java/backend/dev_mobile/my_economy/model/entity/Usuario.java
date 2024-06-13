@@ -26,16 +26,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario implements UserDetails{
+public class Usuario implements UserDetails {
 
-    public Usuario(String login, String nome, String password, UserRole role, LocalDate dtNascimento, Integer idDespesa, Integer idLimiteMensal) {
+    public Usuario(String login, String nome, String password, UserRole role, LocalDate dtNascimento) {
         this.login = login;
         this.nome = nome;
         this.password = password;
         this.role = role;
         this.dtNascimento = dtNascimento;
-        this.idDespesa = idDespesa;
-        this.idLimiteMensal = idLimiteMensal;
     }
 
     @Id
@@ -46,14 +44,15 @@ public class Usuario implements UserDetails{
     private String password;
     private UserRole role;
     private LocalDate dtNascimento;
-    private Integer idDespesa;
-    private Integer idLimiteMensal;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), (new SimpleGrantedAuthority("ROLE_USER")));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), (new SimpleGrantedAuthority("ROLE_USER")));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
     @Override
     public String getUsername() {
         return login;
