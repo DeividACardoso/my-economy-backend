@@ -40,8 +40,10 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
+        var usuario = usuarioRepository.getByLogin(data.login());
+
         var token = tokenService.GenerateToken((Usuario) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNome(), usuario.getDtNascimento()));
     }
 
     @SuppressWarnings("rawtypes")
