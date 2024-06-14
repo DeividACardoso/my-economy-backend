@@ -11,7 +11,7 @@ import backend.dev_mobile.my_economy.repository.DespesaRepository;
 
 @Service
 public class DespesaService {
-    
+
     @Autowired
     private DespesaRepository despesaRepository;
 
@@ -22,5 +22,12 @@ public class DespesaService {
     public List<Despesa> getDespesasPorMes(String usuarioEmail, LocalDate referenciaMes) {
         return despesaRepository.getByUsuarioEmailAndReferenciaMes(usuarioEmail, referenciaMes);
     }
-}
 
+    public List<Despesa> getByUsuarioEmail(String login) {
+        return despesaRepository.getByUsuarioEmail(login);
+    }
+
+    public void deletarDespesa(Long id) {
+        despesaRepository.deleteById(id);
+    }
+}

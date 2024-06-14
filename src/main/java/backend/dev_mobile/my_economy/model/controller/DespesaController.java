@@ -3,8 +3,11 @@ package backend.dev_mobile.my_economy.model.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +32,23 @@ public class DespesaController {
 
     @PostMapping("/salvar")
     public Despesa salvar(@RequestBody Despesa despesa) {
+        System.out.println(despesa);
         return despesaService.salvar(despesa);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deletarDespesa(@PathVariable Long id) {
+        System.out.println("To aqui. Delete Despesa.");
+        despesaService.deletarDespesa(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    
+    @GetMapping("/{login}")
+    public List<Despesa> getByUsuarioEmail(@PathVariable String login) {
+        return despesaService.getByUsuarioEmail(login);
+    }
+    
     //     @PutMapping("/{id}")
     // public ResponseEntity<Despesa> updateExpense(@PathVariable Long id, @RequestBody Despesa despesa, @AuthenticationPrincipal UserDetails userDetails) {
     //     YearMonth currentMonth = YearMonth.now();

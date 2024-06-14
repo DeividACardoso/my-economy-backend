@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = {"http://localhost:8081","exp://10.10.101.170:8081","http://localhost:9000"}, maxAge = 3600)
+@CrossOrigin(origins = { "http://localhost:8081", "exp://10.10.101.170:8081", "http://localhost:9000" }, maxAge = 3600)
 public class AuthenticationController {
 
     @Autowired
@@ -36,7 +36,11 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
-        System.out.println("Oi AuthController.");
+        if (this.usuarioRepository.findByLogin(data.login()) == null) {
+            System.out.println(ResponseEntity.badRequest().body("Teste"));
+            return ResponseEntity.badRequest().body("Incorrect login credentials");
+        }
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -59,9 +63,7 @@ public class AuthenticationController {
                 data.nome(),
                 encryptedPassword,
                 data.role(),
-                data.dtNascimento(),
-                data.idDespesa(),
-                data.idLimiteMensal());
+                data.dtNascimento());
 
         this.usuarioRepository.save(usuario);
 
