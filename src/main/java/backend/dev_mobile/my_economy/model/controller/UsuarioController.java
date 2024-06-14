@@ -2,9 +2,12 @@ package backend.dev_mobile.my_economy.model.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.dev_mobile.my_economy.model.entity.Usuario;
 import backend.dev_mobile.my_economy.service.UsuarioService;
 
 @RestController
@@ -14,6 +17,10 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
-
+    
+    @GetMapping("/{login}")
+    public Usuario findByLogin(@PathVariable String login) {
+        return usuarioService.findByLogin(login);
+    }
     
 }

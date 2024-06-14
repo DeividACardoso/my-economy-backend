@@ -15,5 +15,9 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Usuario findByLogin(String login){
+        return usuarioRepository.getByLogin(login);
+    }
+
 }
 

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import backend.dev_mobile.my_economy.model.entity.Despesa;
 import backend.dev_mobile.my_economy.model.entity.LimiteMensal;
-import backend.dev_mobile.my_economy.model.exceptions.BadInputsException;
 import backend.dev_mobile.my_economy.service.LimiteMensalService;
 
 @Controller

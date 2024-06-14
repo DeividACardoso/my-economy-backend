@@ -38,7 +38,7 @@ public class AuthenticationController {
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         if (this.usuarioRepository.findByLogin(data.login()) == null) {
             System.out.println(ResponseEntity.badRequest().body("Teste"));
-            return ResponseEntity.badRequest().body("Incorrect login credentials");
+            return ResponseEntity.badRequest().body("Login não encontrado.");
         }
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -53,8 +53,11 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
+        System.out.println(ResponseEntity.badRequest().body("Login já utilizado."));
+
         if (this.usuarioRepository.findByLogin(data.login()) != null)
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Login já utilizado.");
+
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 
