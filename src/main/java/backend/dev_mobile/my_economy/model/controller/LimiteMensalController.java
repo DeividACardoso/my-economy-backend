@@ -37,7 +37,7 @@ public class LimiteMensalController {
     public double calcularProgressoLimite(@PathVariable("mes") String referenceMonth,
             @RequestBody LimiteMensal limiteMensal, @RequestBody Despesa despesa) {
         double limiteMensalValue = limiteMensal.getQuantidade();
-        double despesaValue = despesa.getQuantidade();
+        double despesaValue = despesa.getGasto();
 
         double progresso = (despesaValue / limiteMensalValue) * 100;
         return progresso;
