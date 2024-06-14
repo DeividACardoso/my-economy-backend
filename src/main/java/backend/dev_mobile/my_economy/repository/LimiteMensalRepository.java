@@ -11,4 +11,10 @@ import backend.dev_mobile.my_economy.model.entity.LimiteMensal;
 @Repository
 public interface LimiteMensalRepository extends JpaRepository<LimiteMensal, Long> {
     Optional<LimiteMensal> findByUsuarioEmailAndReferenciaMes(String email, LocalDate mesReferencia);
+
+	boolean existsById(Integer id);
+
+	void deleteById(Integer id);
+
+	Optional<LimiteMensal> findById(Integer id);
 }
