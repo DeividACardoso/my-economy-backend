@@ -38,7 +38,6 @@ public class DespesaController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletarDespesa(@PathVariable Long id) {
-        System.out.println("To aqui. Delete Despesa.");
         despesaService.deletarDespesa(id);
         return ResponseEntity.noContent().build();
     }
