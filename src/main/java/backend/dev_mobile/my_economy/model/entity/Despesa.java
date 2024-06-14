@@ -17,7 +17,7 @@ public class Despesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descricao;
-    private Double quantidade;
+    private Double gasto;
     @Column(name = "referencia_mes")
     private LocalDate referenciaMes;
     @Column(name = "usuario_email")

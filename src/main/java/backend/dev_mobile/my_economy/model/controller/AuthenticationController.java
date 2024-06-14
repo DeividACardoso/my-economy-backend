@@ -36,7 +36,11 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
-        System.out.println("Oi AuthController.");
+        if (this.usuarioRepository.findByLogin(data.login()) == null) {
+            System.out.println(ResponseEntity.badRequest().body("Teste"));
+            return ResponseEntity.badRequest().body("Incorrect login credentials");
+        }
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
