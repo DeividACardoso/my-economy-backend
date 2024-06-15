@@ -1,5 +1,6 @@
 package backend.dev_mobile.my_economy.model.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.dev_mobile.my_economy.model.entity.Despesa;
 import backend.dev_mobile.my_economy.service.DespesaService;
-
 
 @RestController
 @RequestMapping("/api/despesas")
@@ -25,14 +26,25 @@ public class DespesaController {
     @Autowired
     DespesaService despesaService;
 
-    @GetMapping("/por-mes")
-    public List<Despesa> listarDespesasPorMes(@RequestBody Despesa despesa) {
-        return despesaService.getDespesasPorMes(despesa.getUsuarioEmail(), despesa.getReferenciaMes());
+    @GetMapping("/por-mes-e-login/{referenciaMes}/{login}")
+    public List<Despesa> getByReferenciaMesAndUsuarioEmail(@PathVariable("referenciaMes") LocalDate referenciaMes,
+            @PathVariable("login") String usuarioEmail) {
+                System.out.println("Sem alterar: "+referenciaMes);
+                referenciaMes = referenciaMes.withDayOfMonth(1);
+                System.out.println("Alterado: "+referenciaMes);
+        return despesaService.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
+    }
+
+    @GetMapping("/por-mes/{referenciaMes}")
+    public List<Despesa> listarDespesasPorMes(@PathVariable("referenciaMes") LocalDate referenciaMes) {
+        return despesaService.getDespesasPorMes(referenciaMes);
     }
 
     @PostMapping("/salvar")
     public Despesa salvar(@RequestBody Despesa despesa) {
-        System.out.println(despesa);
+        System.out.println(despesa.getReferenciaMes());
+        despesa.setReferenciaMes(despesa.getReferenciaMes().withDayOfMonth(1));
+        System.out.println(despesa.getReferenciaMes());
         return despesaService.salvar(despesa);
     }
 
@@ -42,20 +54,14 @@ public class DespesaController {
         return ResponseEntity.noContent().build();
     }
 
-    
     @GetMapping("/{login}")
     public List<Despesa> getByUsuarioEmail(@PathVariable String login) {
         return despesaService.getByUsuarioEmail(login);
     }
-    
-    //     @PutMapping("/{id}")
-    // public ResponseEntity<Despesa> updateExpense(@PathVariable Long id, @RequestBody Despesa despesa, @AuthenticationPrincipal UserDetails userDetails) {
-    //     YearMonth currentMonth = YearMonth.now();
-    //     if (despesa.getReferenciaMes().isBefore(currentMonth)) {
-    //         return ResponseEntity.badRequest().body(null);
-    //     }
-    //     Despesa updatedExpense = despesaService.updateExpense(id, despesa);
-    //     return ResponseEntity.ok(updatedExpense);
-    // }
-    
+
+    @PutMapping("/atualizar/{id}")
+    public Despesa atualizar(@PathVariable Long id, @RequestBody Despesa despesa) {
+        return despesaService.atualizar(id, despesa);
+    }
+
 }
