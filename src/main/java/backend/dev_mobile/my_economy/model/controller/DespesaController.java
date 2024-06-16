@@ -20,7 +20,7 @@ import backend.dev_mobile.my_economy.service.DespesaService;
 
 @RestController
 @RequestMapping("/api/despesas")
-@CrossOrigin(origins = { "http://localhost:8081", "exp://192.168.0.16:8081", "http://localhost:9000" }, maxAge = 3600)
+@CrossOrigin(origins = { "http://localhost:8081", "exp://192.168.100.30:8081", "http://localhost:9000" }, maxAge = 3600)
 public class DespesaController {
 
     @Autowired
@@ -64,4 +64,13 @@ public class DespesaController {
         return despesaService.atualizar(id, despesa);
     }
 
+    @GetMapping("/soma-por-mes/{referenciaMes}")
+    public double somarDespesasPorMes(@PathVariable("referenciaMes") LocalDate referenciaMes) {
+        List<Despesa> despesas = despesaService.getDespesasPorMes(referenciaMes);
+        double total = 0.0;
+        for (Despesa despesa : despesas) {
+            total += despesa.getGasto();
+        }
+        return total;
+    }
 }
