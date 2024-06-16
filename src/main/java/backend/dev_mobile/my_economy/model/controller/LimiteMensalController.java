@@ -1,5 +1,7 @@
 package backend.dev_mobile.my_economy.model.controller;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,11 @@ public class LimiteMensalController {
 	LimiteMensalService limiteMensalService;
 
 	@PostMapping("/salvar")
-	public LimiteMensal criarLimiteMensal(@RequestBody LimiteMensal limite) {
+	public LimiteMensal salvarLimite(@RequestBody LimiteMensal limite) {
 		System.out.println(limite.getReferenciaMes());
-		return limiteMensalService.criarLimiteMensal(limite);
+		limite.setReferenciaMes(limite.getReferenciaMes().withDayOfMonth(1));
+		System.out.println(limite.getReferenciaMes());
+		return limiteMensalService.salvarLimite(limite);
 	}
 
 	@GetMapping("/listar-limite")
@@ -36,11 +40,11 @@ public class LimiteMensalController {
 		return limiteMensalService.getLimiteMensal(limiteMensal.getUsuarioEmail(), limiteMensal.getReferenciaMes());
 	}
 
-    @GetMapping("/progresso/{mes}")
-    public double calcularProgressoLimite(@PathVariable("mes") String referenceMonth,
-            @RequestBody LimiteMensal limiteMensal, @RequestBody Despesa despesa) {
-        double limiteMensalValue = limiteMensal.getQuantidade();
-        double despesaValue = despesa.getGasto();
+	@GetMapping("/progresso/{mes}")
+	public double calcularProgressoLimite(@PathVariable("mes") String referenceMonth,
+			@RequestBody LimiteMensal limiteMensal, @RequestBody Despesa despesa) {
+		double limiteMensalValue = limiteMensal.getValor();
+		double despesaValue = despesa.getGasto();
 
 		double progresso = (despesaValue / limiteMensalValue) * 100;
 		return progresso;
@@ -57,5 +61,19 @@ public class LimiteMensalController {
 		boolean excluiu = limiteMensalService.excluir(id);
 		return excluiu;
 	}
+	
+	@GetMapping("/por-mes-e-login/{referenciaMes}/{login}")
+    public List<LimiteMensal> getByReferenciaMesAndUsuarioEmail(@PathVariable("referenciaMes") LocalDate referenciaMes,
+            @PathVariable("login") String usuarioEmail) {
+                System.out.println("Sem alterar: "+referenciaMes);
+                referenciaMes = referenciaMes.withDayOfMonth(1);
+                System.out.println("Alterado: "+referenciaMes);
+        return limiteMensalService.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
+    }
+
+    @GetMapping("/por-mes/{referenciaMes}")
+    public List<LimiteMensal> listarDespesasPorMes(@PathVariable("referenciaMes") LocalDate referenciaMes) {
+        return limiteMensalService.getDespesasPorMes(referenciaMes);
+    }
 
 }

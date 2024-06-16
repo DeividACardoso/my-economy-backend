@@ -16,7 +16,7 @@ public class LimiteMensal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Double quantidade;
+    private Double valor;
     @Column(name = "referencia_mes")
     private LocalDate referenciaMes;
     @Column(name = "usuario_email")
