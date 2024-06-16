@@ -32,6 +32,13 @@ public class LimiteMensalService {
 		return limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(email, month);
 	}
 
+	public LimiteMensal atualizar(Integer id, LimiteMensal limiteAtualizar) {
+		LimiteMensal limiteAtualizado = findById(id);
+		limiteAtualizado.setQuantidade(limiteAtualizar.getQuantidade());
+		limiteAtualizado.setReferenciaMes(limiteAtualizar.getReferenciaMes());
+		return limiteMensalRepository.save(limiteAtualizar);
+	}
+
 	public boolean excluir(Integer id) {
 		boolean excluiu = false;
 		if (limiteMensalRepository.existsById(id)) {
@@ -39,13 +46,6 @@ public class LimiteMensalService {
 			excluiu = true;
 		}
 		return excluiu;
-	}
-
-	public LimiteMensal atualizar(Integer id, LimiteMensal limiteAtualizar) throws BadInputsException {
-		LimiteMensal limiteAtualizado = findById(id);
-		limiteAtualizado.setQuantidade(limiteAtualizar.getQuantidade());
-		limiteAtualizado.setReferenciaMes(limiteAtualizar.getReferenciaMes());
-		return limiteMensalRepository.save(limiteAtualizar);
 	}
 
 	private LimiteMensal findById(Integer id) {
