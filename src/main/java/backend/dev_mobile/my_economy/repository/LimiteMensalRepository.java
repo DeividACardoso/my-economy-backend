@@ -17,4 +17,6 @@ public interface LimiteMensalRepository extends JpaRepository<LimiteMensal, Long
 	void deleteById(Integer id);
 
 	Optional<LimiteMensal> findById(Integer id);
+
+	
 }

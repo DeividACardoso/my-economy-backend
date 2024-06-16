@@ -11,8 +11,10 @@ import backend.dev_mobile.my_economy.model.entity.Despesa;
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
-    List<Despesa> getByUsuarioEmailAndReferenciaMes(String email, LocalDate referenciaMes);
+    List<Despesa> getByReferenciaMes(LocalDate referenciaMes);
 
     List<Despesa> getByUsuarioEmail(String email);
+
+    List<Despesa> getByReferenciaMesAndUsuarioEmail(LocalDate referenciaMes, String usuarioEmail);
 
 }

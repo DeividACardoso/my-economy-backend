@@ -36,11 +36,11 @@ public class LimiteMensalController {
 		return limiteMensalService.getLimiteMensal(limiteMensal.getUsuarioEmail(), limiteMensal.getReferenciaMes());
 	}
 
-	@GetMapping("/progresso/{mes}")
-	public double calcularProgressoLimite(@PathVariable("mes") String referenceMonth,
-			@RequestBody LimiteMensal limiteMensal, @RequestBody Despesa despesa) {
-		double limiteMensalValue = limiteMensal.getQuantidade();
-		double despesaValue = despesa.getGasto();
+    @GetMapping("/progresso/{mes}")
+    public double calcularProgressoLimite(@PathVariable("mes") String referenceMonth,
+            @RequestBody LimiteMensal limiteMensal, @RequestBody Despesa despesa) {
+        double limiteMensalValue = limiteMensal.getQuantidade();
+        double despesaValue = despesa.getGasto();
 
 		double progresso = (despesaValue / limiteMensalValue) * 100;
 		return progresso;

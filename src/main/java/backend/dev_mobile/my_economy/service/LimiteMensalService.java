@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import backend.dev_mobile.my_economy.model.entity.LimiteMensal;
+import backend.dev_mobile.my_economy.model.exceptions.BadInputsException;
 import backend.dev_mobile.my_economy.repository.LimiteMensalRepository;
 
 @Service
@@ -47,7 +48,7 @@ public class LimiteMensalService {
 		return excluiu;
 	}
 
-	public LimiteMensal findById(Integer id) {
+	private LimiteMensal findById(Integer id) {
 		return limiteMensalRepository.findById(id).get();
 	}
 
