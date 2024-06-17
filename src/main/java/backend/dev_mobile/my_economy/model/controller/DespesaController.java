@@ -20,7 +20,7 @@ import backend.dev_mobile.my_economy.service.DespesaService;
 
 @RestController
 @RequestMapping("/api/despesas")
-@CrossOrigin(origins = { "http://localhost:8081", "exp://192.168.0.16:8081", "http://localhost:9000" }, maxAge = 3600)
+@CrossOrigin(origins = { "http://localhost:8081", "exp://192.168.100.30:8081", "http://localhost:9000" }, maxAge = 3600)
 public class DespesaController {
 
     @Autowired
@@ -29,9 +29,7 @@ public class DespesaController {
     @GetMapping("/por-mes-e-login/{referenciaMes}/{login}")
     public List<Despesa> getByReferenciaMesAndUsuarioEmail(@PathVariable("referenciaMes") LocalDate referenciaMes,
             @PathVariable("login") String usuarioEmail) {
-                System.out.println("Sem alterar: "+referenciaMes);
                 referenciaMes = referenciaMes.withDayOfMonth(1);
-                System.out.println("Alterado: "+referenciaMes);
         return despesaService.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
     }
 
@@ -42,9 +40,7 @@ public class DespesaController {
 
     @PostMapping("/salvar")
     public Despesa salvar(@RequestBody Despesa despesa) {
-        System.out.println(despesa.getReferenciaMes());
         despesa.setReferenciaMes(despesa.getReferenciaMes().withDayOfMonth(1));
-        System.out.println(despesa.getReferenciaMes());
         return despesaService.salvar(despesa);
     }
 
@@ -64,4 +60,13 @@ public class DespesaController {
         return despesaService.atualizar(id, despesa);
     }
 
+    @GetMapping("/soma-por-mes/{referenciaMes}/{usuarioEmail}")
+    public double somarDespesasPorMesEUsuario(@PathVariable("referenciaMes") LocalDate referenciaMes, @PathVariable("usuarioEmail") String usuarioEmail) {
+        List<Despesa> despesas = despesaService.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
+        double total = 0.0;
+        for (Despesa despesa : despesas) {
+            total += despesa.getGasto();
+        }
+        return total;
+    }
 }

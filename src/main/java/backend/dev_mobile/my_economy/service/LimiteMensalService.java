@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import backend.dev_mobile.my_economy.model.entity.Despesa;
 import backend.dev_mobile.my_economy.model.entity.LimiteMensal;
 import backend.dev_mobile.my_economy.repository.LimiteMensalRepository;
 
@@ -18,8 +17,14 @@ public class LimiteMensalService {
 	@Autowired
 	private LimiteMensalRepository limiteMensalRepository;
 
-	public LimiteMensal salvarLimite(LimiteMensal limite) {
-		limite.setReferenciaMes(limite.getReferenciaMes().withDayOfMonth(1));
+	public LimiteMensal criarLimiteMensal(LimiteMensal limite) {
+		LocalDate currentMonth = LocalDate.now().withDayOfMonth(1);
+		if (limite.getReferenciaMes().isBefore(currentMonth)) {
+			throw new IllegalArgumentException("Não é possivel criar limites para meses que já passaram.");
+		}
+		if (limiteMensalRepository.findByUsuarioEmailAndReferenciaMes(limite.getUsuarioEmail(), limite.getReferenciaMes()).isPresent()) {
+			throw new IllegalArgumentException("Limite para este mês já foi gerado.");
+		}
 		return limiteMensalRepository.save(limite);
 	}
 
@@ -34,13 +39,8 @@ public class LimiteMensalService {
 		return limiteMensalRepository.save(limiteAtualizar);
 	}
 
-	public boolean excluir(Integer id) {
-		boolean excluiu = false;
-		if (limiteMensalRepository.existsById(id)) {
-			limiteMensalRepository.deleteById(id);
-			excluiu = true;
-		}
-		return excluiu;
+	public void excluir(Integer id) {
+		limiteMensalRepository.deleteById(id);
 	}
 
 	private LimiteMensal findById(Integer id) {
@@ -48,13 +48,14 @@ public class LimiteMensalService {
 	}
 
 	public List<LimiteMensal> getByReferenciaMesAndUsuarioEmail(@PathVariable("referenciaMes") LocalDate referenciaMes,
-            @PathVariable("login") String usuarioEmail) {
-        referenciaMes = referenciaMes.withDayOfMonth(1);
-        return limiteMensalRepository.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
-    }
+			@PathVariable("login") String usuarioEmail) {
+		referenciaMes = referenciaMes.withDayOfMonth(1);
+		return limiteMensalRepository.getByReferenciaMesAndUsuarioEmail(referenciaMes, usuarioEmail);
 
-	public List<LimiteMensal> getDespesasPorMes(LocalDate referenciaMes) {
-        return limiteMensalRepository.getByReferenciaMes(referenciaMes);
-    }
+	}
+
+	public List<LimiteMensal> getLimitesPorMes(LocalDate referenciaMes) {
+		return limiteMensalRepository.getByReferenciaMes(referenciaMes);
+	}
 
 }

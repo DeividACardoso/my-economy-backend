@@ -37,6 +37,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/despesa").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/limite").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
