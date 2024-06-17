@@ -1,6 +1,7 @@
 package backend.dev_mobile.my_economy.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,10 @@ public interface LimiteMensalRepository extends JpaRepository<LimiteMensal, Long
 	void deleteById(Integer id);
 
 	Optional<LimiteMensal> findById(Integer id);
+
+	List<LimiteMensal> getByReferenciaMesAndUsuarioEmail(LocalDate referenciaMes, String usuarioEmail);
+
+	List<LimiteMensal> getByReferenciaMes(LocalDate referenciaMes);
 
 	
 }
